@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import { getData } from './components/Actions';
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import Home from './components/Home/Home';
+import Navbar from './components/Navbar/NavBar';
 
-function App() {
+const App = () => {
+    //const [Data,setData] = useState(null)
+    const disptach = useDispatch()
+
+    useEffect(()=>{
+        disptach(getData())
+    },[])
+    const {cartDetails} = useSelector((state)=>state.cart)
+    console.log(cartDetails)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+        <Navbar/>
+        <Routes>
+            <Route path="/" element={<Home/>} exact />
+        </Routes>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

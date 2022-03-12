@@ -1,0 +1,13 @@
+.search{
+    width: 350px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width:550px) {
+    .logo img{
+        width: 80px;
+    }
+    .search{
+        width: 200px;
+    }
+}
