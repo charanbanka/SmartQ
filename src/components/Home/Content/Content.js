@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import favdish from '../../images/fav-dish.webp'
 import Categories from './Categories'
-import Consumables from './Consumables'
 import './Style.css'
 
 const Content = () => {
@@ -17,7 +16,7 @@ const Content = () => {
     ]
 
   return (
-    <div className='shadow-sm rounded' style={{height:"550px"}}>
+    <div className='shadow-sm rounded overflow-auto' style={{height:"500px"}}>
         <div className='row rounded  shadow bg d-flex flex-row' style={{height:"80px"}}>
             <div className='col-8'>
                 <h2 className='text-white'>Main Course</h2>

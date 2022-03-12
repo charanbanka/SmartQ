@@ -1,19 +1,53 @@
 import React, { useEffect, useState } from 'react'
 import {AiOutlineDown} from 'react-icons/ai'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Consumables = ({item}) => {
     const [subMenu,setSubMenu] = useState(false)
     const [qty,setQty] = useState(0)
+    //const [submenuPrice,setSubMenuPrice] = useState(0)
     const [subTotal,setSubTotal] = useState(0)
+    const {cartDetails} = useSelector((state)=>state.cart)
+    const disptach = useDispatch()
+    
+    const data = cartDetails?.submenu
+    
     const handleQty = (e)=>{
         setQty(e.target.value)
-        let m = Number((qty*item.price*100).toPrecision(15))
-        setSubTotal(Math.round(m) / 100 * Math.sign(qty*item.price))
     }
-    console.log(item)
-    useEffect(()=>{
 
-    },[qty])
+    useEffect(()=>{
+        let m = Number((qty*item.price*100).toPrecision(15))
+        let itemPrice =Math.round(m) / 100 * Math.sign(qty*item.price)
+        setSubTotal(itemPrice)
+     },[qty])
+
+    
+
+     const handleCart = ()=>{
+         item = {...item,qty:Number(qty),subTotal:Number(subTotal)}
+        if(item.qty>0) disptach({type:"CARTADD",item})
+     }
+    const Submenu =()=>{
+        if(subMenu){
+            return (
+                item?.submenu && (item?.submenu?.map((val)=>(
+                    <div key={val} className="d-flex justify-content-between align-items-center p-2 shadow-sm" >
+                        <div className='d-flex align-items-center justify-content-between '>
+                            <input style={{width:"20px",height:"20px",cursor:"pointer", marginLeft:"0.5rem"}} id="mycheck" type="checkbox"/>
+                            <img src={data?.Onion.imageurl} style={{marginLeft:"2.5rem",marginRight:"1.5rem"}} className="rounded-circle" alt="image" width="40px" height="40px"></img> 
+                            <label className="form-check-label">
+                                {val}
+                            </label> 
+                        </div>                  
+                        <div className='' style={{paddingRight:"1rem"}}>
+                            <h4 className='text-primary'>${data?.Onion?.price}</h4>
+                        </div>
+                    </div>
+                )))
+            )
+        }
+    }
   return (
     <div className='container shadow p-2' style={{marginTop:"2rem"}}>
         <div className='rounded row shadow-sm'>
@@ -24,7 +58,10 @@ const Consumables = ({item}) => {
                 <div className='col-6'>
                     <h4 className='text-dark'>{item.foodname}</h4>
                     <p>{item?.fooddescription}</p>
-                    <button className='btn btn-primary rounded' onClick={()=>setSubMenu(true)} >Add on</button>
+                    {
+                        item.category ==="Pizza" && 
+                        <button className='btn btn-primary rounded' onClick={()=>setSubMenu(true)} >Add on</button>
+                    } 
                 </div>
                 <div className='col-3'>
                     <h5 className='text-primary'>${item.price}</h5>
@@ -37,22 +74,16 @@ const Consumables = ({item}) => {
                     <p className='text-dark'>{item?.foodname} add-ons</p>
                     <p onClick={()=>setSubMenu(false)} className='text-primary'>Cancel</p>
                 </div>
-                <div className=''>
+                <div className='col'>
                     <div className='row d-flex justify-content-between'>
                         <p>Choose Toppings</p>
                         <AiOutlineDown />
                     </div>
-                    {/* {item?.subMenu?.map((value)=>(
-                        <div key={value} className='container m-2'>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"/>
-                                <label class="form-check-label" for="exampleRadios1">
-                                    value
-                                </label>
-                            </div>
-                        </div>
-                    ))} */}
                     
+                    <div className='d-flex flex-column'>
+                         <Submenu/>
+                    </div>
+                
                 </div>
 
             </div>
@@ -60,13 +91,13 @@ const Consumables = ({item}) => {
         <div className='row' style={{marginTop:"1rem"}}>
             <div className='col-3'>
                 <h5 className='text-dark'>Quantity</h5>
-                <input type="number" className='form-control' value={qty} onChange={handleQty} placeholder='Qty'/>
+                <input type="number" min="0" className='form-control' value={qty} onChange={handleQty} placeholder='Qty'/>
             </div>
             <div className='col-6'>
                 <h5 className='text-dark'>Session</h5>
                 <select name="cars" id="cars" className='form-control'>
                     {item.sessionlist.map((val)=>(
-                        <option value={val}>{val}</option>
+                        <option key={val} value={val}>{val}</option>
                     ))}
                     
                     
@@ -81,8 +112,8 @@ const Consumables = ({item}) => {
             <h5 className='text-dark'>Note to the Kitchen</h5>
            
             <div className='d-flex flex-row justify-content-between'>
-                <p>val</p>
-                <button className='btn btn-primary rounded'>Add to Cart</button>
+                <p>Mate it spicy</p>
+                <button onClick={handleCart} className='btn btn-primary rounded'>Add to Cart</button>
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@ const Home = () => {
                     ))
                 }
         </div>
-        
+        <div style={{border:"1px dashed blue",height:"500px"}}></div>
         <div className="col-6 m-1" >
           <Content/>
         </div>

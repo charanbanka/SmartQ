@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Consumables from './Consumables'
-import Decorations from './Decorations'
-import Pizza from './Pizza'
 
 const Categories = ({item}) => {
   const [isPizza,setIsPizza] = useState(false)
@@ -16,7 +14,7 @@ const Categories = ({item}) => {
         setIsConsumables(!isCunsumables)
         setIsDecorations(false)
         setIsPizza(false)
-    } else if(e?.target?.alt=="Decorations"){
+    } else if(e?.target?.alt==="Decorations"){
         //console.log("Consumables-1")
         setIsConsumables(false)
         setIsDecorations(!isDecorations)
@@ -32,7 +30,7 @@ const Categories = ({item}) => {
 const {cartDetails} = useSelector((state)=>state.cart)
     //console.log(cartDetails?.extras?.categories)
     const data = cartDetails?.menu
-console.log(data)
+
   return (
     <div>
         <div onClick={handleClick}>
